@@ -1,10 +1,31 @@
 DEVICE=<%= interface %>
 BOOTPROTO=static
+<%- unless broadcast.to_s.empty? then -%>
 BROADCAST=<%= broadcast %>
+<%-end -%>
+<%- unless macaddress.to_s.empty? then -%>
 HWADDR=<%= macaddress %>
+<%- end -%>
+<%- unless ipaddress.to_s.empty? then -%>
 IPADDR=<%= ipaddress %>
+<%- end -%>
+<%- unless netmask.to_s.empty? then -%>
 NETMASK=<%= netmask %>
+<%- end -%>
+<%- unless network.to_s.empty? then -%>
 NETWORK=<%= network %>
+<%- end -%>
+<%- unless onboot.to_s.empty? then -%>
 ONBOOT=<%= onboot %>
+<%- end -%>
+<%- unless master.to_s.empty? then -%>
+MASTER=<%= master %>
+<%- end -%>
+<%- unless slave.to_s.empty? then -%>
+SLAVE=<%= slave %>
+<%- end -%>
+<%- if interface.include? "." then -%>
+VLAN=yes
+<%- end -%>
 IPV6INIT=no
 TYPE=Ethernet

@@ -21,14 +21,16 @@ define network::alias(
 
 	case $ensure {
 		up: {
-			exec { "/sbin/ifdown $interface; /sbin/ifup $interface":
+			exec { "ifup":
+				command => "/sbin/ifdown $interface; /sbin/ifup $interface",
 				subscribe => File["ifcfg-$interface"],
 				refreshonly => true
 			}
 		}
 
 		down: {
-			exec { "/sbin/ifdown $interface":
+			exec { "ifdown":
+				command =>"/sbin/ifdown $interface",
 				subscribe => File["ifcfg-$interface"],
 				refreshonly => true
 			}

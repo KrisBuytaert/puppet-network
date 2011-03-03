@@ -1,13 +1,28 @@
 define network::interface(
-		$hostname,
-		$ipaddress,
-		$netmask,
-		$network,
+		$hostname = "",
+		$ipaddress = "",
+		$netmask = "",
+		$network = "",
 		$gateway = "",
-		$broadcast,
-		$macaddress,
-		$routes_file = "",
-		$ensure) {
+		$broadcast = "",
+		$macaddress = "",
+		$routes_file = "true",
+		$ensure = "up",
+		$master = "",
+		$slave = "",
+		$address0 = "",
+		$netmask0 = "",
+		$gateway0 = "",
+		$address1 = "",
+		$netmask1 = "",
+		$gateway1 = "",
+		$address2 = "",
+		$gateway2 = "",
+		$netmask2 = "",
+		$address3 = "",
+		$netmask3 = "",
+		$gateway3 = "") {
+
 
 	$interface = $name
 
@@ -50,25 +65,27 @@ define network::interface(
 					owner => root,
 					group => root,
 					mode => 600,
-					source => "puppet://$servername/network/sysconfig/network-scripts/route-$interface",
+					content => template("network/sysconfig/network-scripts/route.erb"),
 					ensure => present,
 					alias => "route-$interface"
 				}
 			} else {
 				$subscribes = [
 					File["ifcfg-$interface"],
-					File["network"]
+				
 				]
 			}
 
-			exec { "/sbin/ifdown $interface; /sbin/ifup $interface":
+			exec { 
+				"/sbin/ifdown $interface; /sbin/ifup $interface":
 				subscribe => $subscribes,
 				refreshonly => true
 			}
 		}
 
 		down: {
-			exec { "/sbin/ifdown $interface":
+			exec {  
+				"/sbin/ifdown $interface":
 				subscribe => File["ifcfg-$interface"],
 				refreshonly => true
 			}
